@@ -24,8 +24,8 @@ const App = () => {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="page/:page_id" element={<StatusPage />} />
-          <Route path="page-preview/:page_id" element={<StatusPagePreview />} />
+          <Route path="/page/:page_id" element={<StatusPage />} />
+          <Route path="/page-preview/:page_id" element={<StatusPagePreview />} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
         <Footer />

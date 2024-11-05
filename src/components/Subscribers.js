@@ -14,24 +14,20 @@ import api from "../backend/api";
 import { toast } from "react-toastify";
 
 const initialFormData = {
-  name: "",
-  value: "",
-  unit: "",
+  email: "",
 };
 
-const SystemMetrics = ({ page_id }) => {
-  const [systemMetrics, setSystemMetrics] = useState([]);
+const Subscribers = ({ page_id }) => {
+  const [subscribers, setSubscribers] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [currId, setCurrId] = useState(null);
   const [formData, setFormData] = useState(initialFormData);
 
-  // Fetch systemMetrics for the page
-  const fetchSystemMetrics = async () => {
+  // Fetch subscribers for the page
+  const fetchSubscribers = async () => {
     try {
-      const response = await api.get(
-        `status/system-metrics/?page_id=${page_id}`
-      );
-      setSystemMetrics(response.data);
+      const response = await api.get(`status/subscribers/?page_id=${page_id}`);
+      setSubscribers(response.data);
     } catch (err) {
       toast.error("Failed to load system metrics.");
     }
@@ -40,12 +36,12 @@ const SystemMetrics = ({ page_id }) => {
   const handleFormSubmit = async () => {
     try {
       if (currId) {
-        await api.put(`status/system-metrics/${currId}/`, {
+        await api.put(`status/subscribers/${currId}/`, {
           ...formData,
           page: page_id,
         });
       } else {
-        await api.post(`status/system-metrics/`, {
+        await api.post(`status/subscribers/`, {
           ...formData,
           page: page_id,
         });
@@ -53,16 +49,16 @@ const SystemMetrics = ({ page_id }) => {
       setFormData(initialFormData);
       setCurrId(null);
       setModalOpen(false);
-      fetchSystemMetrics();
+      fetchSubscribers();
     } catch (err) {
-      toast.error("Failed to save system metrics.");
+      toast.error("Failed to save subscriber");
     }
   };
 
-  const handleEditClick = (systemMetric) => {
-    const { id, ...rest } = systemMetric;
+  const handleEditClick = (subscriber) => {
+    const { id, ...rest } = subscriber;
     setFormData(rest);
-    setCurrId(systemMetric.id);
+    setCurrId(subscriber.id);
     setModalOpen(true);
   };
 
@@ -84,7 +80,7 @@ const SystemMetrics = ({ page_id }) => {
 
   useEffect(() => {
     if (page_id) {
-      fetchSystemMetrics();
+      fetchSubscribers();
     }
   }, []);
 
@@ -94,35 +90,31 @@ const SystemMetrics = ({ page_id }) => {
 
   return (
     <>
-      <h2 className="text-2xl font-semibold mb-4">Components</h2>
+      <h2 className="text-2xl font-semibold mb-4">Subscribers</h2>
       <Button
         variant="contained"
         color="primary"
         startIcon={<Add />}
         onClick={() => handleAddClick()}
       >
-        New System Metric
+        New Subscriber
       </Button>
       <Table className="mt-4">
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Value</TableCell>
-            <TableCell>Unit</TableCell>
+            <TableCell>Email</TableCell>
             <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {systemMetrics.map((systemMetric) => (
-            <TableRow key={systemMetric.id}>
-              <TableCell>{systemMetric.name}</TableCell>
-              <TableCell>{systemMetric.value.toFixed(2)}</TableCell>
-              <TableCell>{systemMetric.unit}</TableCell>
+          {subscribers.map((subscriber) => (
+            <TableRow key={subscriber.id}>
+              <TableCell>{subscriber.email}</TableCell>
               <TableCell>
                 <Button
                   color="primary"
                   startIcon={<Edit />}
-                  onClick={() => handleEditClick(systemMetric)}
+                  onClick={() => handleEditClick(subscriber)}
                 >
                   Edit
                 </Button>
@@ -136,36 +128,13 @@ const SystemMetrics = ({ page_id }) => {
       </Table>
       <Modal open={modalOpen} onClose={handleModalClose}>
         <div className="bg-white p-8 rounded shadow-lg max-w-md mx-auto mt-20">
-          <h2 className="text-xl font-semibold mb-4">
-            Create New System Metric
-          </h2>
+          <h2 className="text-xl font-semibold mb-4">Create New Subscriber</h2>
           <TextField
-            label="Name"
+            label="Email"
             variant="outlined"
             fullWidth
-            value={formData.name}
-            onChange={(e) => handleFormChange("name", e.target.value)}
-            sx={{
-              marginBottom: "8px",
-            }}
-          />
-          <TextField
-            label="Value"
-            variant="outlined"
-            fullWidth
-            value={formData.value}
-            onChange={(e) => handleFormChange("value", e.target.value)}
-            sx={{
-              marginBottom: "8px",
-            }}
-            type="number"
-          />
-          <TextField
-            label="Unit"
-            variant="outlined"
-            fullWidth
-            value={formData.unit}
-            onChange={(e) => handleFormChange("unit", e.target.value)}
+            value={formData.email}
+            onChange={(e) => handleFormChange("email", e.target.value)}
             sx={{
               marginBottom: "8px",
             }}
@@ -194,4 +163,4 @@ const SystemMetrics = ({ page_id }) => {
   );
 };
 
-export default SystemMetrics;
+export default Subscribers;

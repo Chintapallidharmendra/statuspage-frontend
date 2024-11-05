@@ -1,9 +1,12 @@
 // src/pages/ManagementDashboard.js
 import React, { useState } from "react";
-import Incidents from "../components/Incidents";
 import { useParams } from "react-router-dom";
+import { OpenInNew } from "@mui/icons-material";
+
+import Incidents from "../components/Incidents";
 import StatusComponents from "../components/StatusComponents";
 import SystemMetrics from "../components/SystemMetrics";
+import Subscribers from "../components/Subscribers";
 
 const ManagementDashboard = () => {
   const params = useParams();
@@ -18,6 +21,8 @@ const ManagementDashboard = () => {
       return <StatusComponents page_id={page_id} />;
     } else if (activeTab === "system_metrics") {
       return <SystemMetrics page_id={page_id} />;
+    } else if (activeTab === "subscribers") {
+      return <Subscribers page_id={page_id} />;
     }
   };
 
@@ -53,6 +58,23 @@ const ManagementDashboard = () => {
           onClick={() => setActiveTab("system_metrics")}
         >
           Manage System Metrics
+        </button>
+        <button
+          className={`w-full text-left p-2 mb-2 rounded ${
+            activeTab === "subscribers" ? "bg-gray-600" : ""
+          }`}
+          onClick={() => setActiveTab("subscribers")}
+        >
+            Manage Subscribers
+        </button>
+        <button
+          className="w-full text-left p-2 mb-2 rounded"
+          onClick={() => window.open(`/page-preview/${page_id}`)}
+        >
+          Preview Page{" "}
+          <span className="text-xs">
+            <OpenInNew fontSize="small" />
+          </span>
         </button>
       </div>
 
