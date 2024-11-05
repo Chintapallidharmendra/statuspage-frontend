@@ -20,8 +20,8 @@ const SignupPage = () => {
         username,
         password,
         email,
-        firstName,
-        lastName,
+        first_name: firstName,
+        last_name: lastName,
       });
       navigate("/login"); // Redirect to login after successful signup
     } catch (error) {
