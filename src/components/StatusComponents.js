@@ -70,6 +70,15 @@ const StatusComponents = ({ page_id }) => {
     setModalOpen(true);
   };
 
+  const handleDeleteClick = async (component_id) => {
+    try {
+      await api.delete(`status/components/${component_id}/`);
+      fetchIncidents();
+    } catch (err) {
+      toast.error("Failed to delete component.");
+    }
+  };
+
   const handleModalClose = () => {
     setModalOpen(false);
     setFormData(initialFormData);
@@ -124,7 +133,11 @@ const StatusComponents = ({ page_id }) => {
                 >
                   Edit
                 </Button>
-                <Button color="secondary" startIcon={<Delete />}>
+                <Button
+                  color="secondary"
+                  startIcon={<Delete />}
+                  onClick={() => handleDeleteClick(component.id)}
+                >
                   Delete
                 </Button>
               </TableCell>
@@ -134,7 +147,7 @@ const StatusComponents = ({ page_id }) => {
       </Table>
       <Modal open={modalOpen} onClose={handleModalClose}>
         <div className="bg-white p-8 rounded shadow-lg max-w-md mx-auto mt-20">
-          <h2 className="text-xl font-semibold mb-4">Create New Incident</h2>
+          <h2 className="text-xl font-semibold mb-4">Create New Component</h2>
           <TextField
             label="Name"
             variant="outlined"

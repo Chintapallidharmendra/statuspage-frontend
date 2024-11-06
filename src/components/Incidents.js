@@ -70,6 +70,15 @@ const Incidents = ({ page_id }) => {
     setModalOpen(true);
   };
 
+  const handleDeleteClick = async (incident_id) => {
+    try {
+      await api.delete(`status/incidents/${incident_id}/`);
+      fetchIncidents();
+    } catch (err) {
+      toast.error("Failed to delete incident.");
+    }
+  };
+
   const handleModalClose = () => {
     setModalOpen(false);
     setFormData(initialFormData);
@@ -124,7 +133,11 @@ const Incidents = ({ page_id }) => {
                 >
                   Edit
                 </Button>
-                <Button color="secondary" startIcon={<Delete />}>
+                <Button
+                  color="secondary"
+                  startIcon={<Delete />}
+                  onClick={() => handleDeleteClick(incident.id)}
+                >
                   Delete
                 </Button>
               </TableCell>

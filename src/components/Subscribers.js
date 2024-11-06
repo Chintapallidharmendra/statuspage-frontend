@@ -68,6 +68,15 @@ const Subscribers = ({ page_id }) => {
     setModalOpen(true);
   };
 
+  const handleDeleteClick = async (subscriber_id) => {
+    try {
+      await api.delete(`status/subscribers/${subscriber_id}/`);
+      fetchSubscribers();
+    } catch (err) {
+      toast.error("Failed to delete subscriber");
+    }
+  };
+
   const handleModalClose = () => {
     setModalOpen(false);
     setFormData(initialFormData);
@@ -118,7 +127,11 @@ const Subscribers = ({ page_id }) => {
                 >
                   Edit
                 </Button>
-                <Button color="secondary" startIcon={<Delete />}>
+                <Button
+                  color="secondary"
+                  startIcon={<Delete />}
+                  onClick={() => handleDeleteClick(subscriber.id)}
+                >
                   Delete
                 </Button>
               </TableCell>

@@ -72,6 +72,15 @@ const SystemMetrics = ({ page_id }) => {
     setModalOpen(true);
   };
 
+  const handleDeleteClick = async (systemMetric_id) => {
+    try {
+      await api.delete(`status/system-metrics/${systemMetric_id}/`);
+      fetchSystemMetrics();
+    } catch (err) {
+      toast.error("Failed to delete system metric.");
+    }
+  };
+
   const handleModalClose = () => {
     setModalOpen(false);
     setFormData(initialFormData);
@@ -126,7 +135,11 @@ const SystemMetrics = ({ page_id }) => {
                 >
                   Edit
                 </Button>
-                <Button color="secondary" startIcon={<Delete />}>
+                <Button
+                  color="secondary"
+                  startIcon={<Delete />}
+                  onClick={() => handleDeleteClick(systemMetric.id)}
+                >
                   Delete
                 </Button>
               </TableCell>
